@@ -21,6 +21,13 @@ public class Hash<K extends Comparable<K>, E> {
 	 * @param length Length of the hash table (needed because this method is static)
 	 * @return The hash function value (the home slot in the table for this key)
 	 */
+	
+	public Hash(int initialCapacity) {
+		this.capacity = initialCapacity;
+		this.size = 0;
+		this.table = new KVPair[initialCapacity];
+		
+	}
 	public static int h(String s, int length) {
 		int intLength = s.length() / 4;
 		long sum = 0;

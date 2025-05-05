@@ -3,11 +3,13 @@
  */
 public class Controller {
 	private Graph graph;
-	private Hash<String, Graph> ht;
+	private Hash<String, Graph> artistTable;
+	private Hash<String, Graph> songTable;
 	
-	public Controller() {
+	public Controller(int capacity) {
 		graph = new Graph();
-		ht = new Hash<String, Graph>();
+		artistTable = new Hash<>(capacity);
+		artistTable = new Hash<String, Graph>();
 	}
 
 	public void insert(String artist, String song) {
