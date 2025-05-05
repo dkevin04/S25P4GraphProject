@@ -16,7 +16,7 @@ public class CommandProcessor {
 	// the Controller object to manipulate the
 	// commands that the command processor
 	// feeds to it
-	private Controller data;
+	private Controller controller;
 	private File file;
 
 	/**
@@ -27,8 +27,8 @@ public class CommandProcessor {
 	 * @param data the Controller object to manipulate
 	 * @param file input file with the commands we want to run
 	 */
-	public CommandProcessor(Controller data, File file) {
-		this.data = data;
+	public CommandProcessor(Controller controller, File file) {
+		this.controller = controller;
 		this.file = file;
 	}
 
@@ -75,12 +75,25 @@ public class CommandProcessor {
 		 * new rectangle and pair with the data and inserting it.
 		 */
 		if (command.equals("insert")) {
-			if (arr.length == 4) {
-				String name = arr[1];
-				int x = Integer.parseInt(arr[2]);
-				int y = Integer.parseInt(arr[3]);
-				
-				
+			if (arr.length == 2) {
+				String str = arr[1];
+				if (str.contains("<SEP>")) {
+					String[] artSong = str.split("<SEP>");
+					if (artSong.length == 2) {
+						String artist = artSong[0];
+						String song = artSong[1];
+						controller.insert(artist, song);
+					}
+					else {
+						System.out.println("wrong format");
+					}
+				}
+				else {
+					System.out.println("missing delimeter");
+				}
+			}
+			else {
+				System.out.println("wrong number of args");
 			}
 
 		}
@@ -93,48 +106,26 @@ public class CommandProcessor {
 		 */
 		else if (command.equals("remove")) {
 			// checks the number of white space delimited strings in the line
-			int numParam = arr.length - 1;
-			if (numParam == 1) {
+			if (arr.length == 2) {
 				String name = arr[1];
-				
-
-			} else if (numParam == 2) {
-				// Calls remove by coordinate, converting string
-				// integers into their Integer equivalent minus whitespace
-				int x = Integer.parseInt(arr[1]);
-				int y = Integer.parseInt(arr[2]);
-				
-
+				controller.remove(name);
+			}
+			else {
+				System.out.println("Wrong number of args");
 			}
 
 		}
 		/*
 		 * Grab x, y, w, h from arr and call region search.
 		 */
-		else if (command.equals("regionsearch")) {
+		else if (command.equals("print")) {
 			// calls the regionsearch method for a set of coordinates
 			// the string integers in the line will be trimmed of whitespace
-			int x = Integer.parseInt(arr[1]);
-			int y = Integer.parseInt(arr[2]);
-			int w = Integer.parseInt(arr[3]);
-			int h = Integer.parseInt(arr[4]);
-
-		}
-		/*
-		 * Calls search with no arguments
-		 */
-		else if (command.equals("search")) {
-			// calls the search method for a name of object
-
-		} else if (command.equals("duplicates")) {
-		}
-		/*
-		 * Calls dump with no arguments
-		 */
-		else if (command.equals("dump")) {
-			// calls the dump method for the Controller, takes no parameters
-			// (see the dump() JavaDoc in the Controller class for more
-			// information)
+			if ( arr.length == 2) {
+				String name = arr[1];
+				controller.print(name);
+			}
+		
 		} else {
 			// the first white space delimited string in the line is not
 			// one of the commands which can manipulate the Controller,

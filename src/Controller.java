@@ -3,11 +3,25 @@
  */
 public class Controller {
 	private Graph graph;
-	private Hash ht;
+	private Hash<String, Graph> ht;
 	
 	public Controller() {
 		graph = new Graph();
-		ht = new Hash();
+		ht = new Hash<String, Graph>();
+	}
+
+	public void insert(String artist, String song) {
+		
+	}
+
+	public void remove(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void print(String name) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
