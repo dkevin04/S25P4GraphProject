@@ -67,9 +67,7 @@ public class Hash<K extends Comparable<K>, E> {
 	}
 
 	public void expandTable() {
-		/*
-		 * doubles size copies entries over
-		 */
+		
 	}
 
 	public boolean insert(K key, E element) {
