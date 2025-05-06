@@ -1,4 +1,8 @@
 // -------------------------------------------------------------------------
+
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Main for Graph project (CS3114/CS5040 Spring 2025 Project 4).
  * Usage: java GraphProject <init-hash-size> <command-file>
@@ -33,7 +37,24 @@ public class GraphProject {
      * @param args
      *            Command line parameters
      */
-    public static void main(String[] args) {
-        // This is the main file for the program.
+	public static void main(String[] args) throws IOException {
+        if (args.length != 1) {
+            System.out.println("Usage: PointsProject <command-file>");
+            return;
+        }
+
+        String commandFile = args[0].trim();
+        // System.out.println("Working on file " + commandFile);
+        File theFile = new File(commandFile);
+        if (!theFile.exists()) {
+            System.out.println("There is no such input file as |" + commandFile
+                + "|");
+            return;
+        }
+
+        Controller myWorld = new Controller(0);
+
+        CommandProcessor processor = new CommandProcessor(myWorld, theFile);
+        processor.processFile();
     }
 }

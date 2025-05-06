@@ -1,143 +1,98 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Graph {
 
-    private class Edge { // Doubly linked list node
-        int vertex, weight;
-        Edge prev, next;
+	// GNode represents a node in the graph (artist or song)
+	public static class GNode {
+		private String name;
+		private List<GNode> neighbors;
 
-        Edge(int v, int w, Edge p, Edge n) {
-            vertex = v;
-            weight = w;
-            prev = p;
-            next = n;
-        }
-    }
+		public GNode(String name) {
+			this.name = name;
+			this.neighbors = new ArrayList<>();
+		}
 
-    private Edge[] nodeArray;
-    private Object[] nodeValues;
-    private int numEdge;
+		public String getName() {
+			return name;
+		}
 
-    // No real constructor needed
-    Graph() {
-    }
+		public List<GNode> getNeighbors() {
+			return neighbors;
+		}
 
+		public void addNeighbor(GNode other) {
+			if (!neighbors.contains(other)) {
+				neighbors.add(other);
+			}
+		}
 
-    // Initialize the graph with n vertices
-    public void init(int n) {
-        nodeArray = new Edge[n];
-        // List headers;
-        for (int i = 0; i < n; i++) {
-            nodeArray[i] = new Edge(-1, -1, null, null);
-        }
-        nodeValues = new Object[n];
-        numEdge = 0;
-    }
+		public void removeNeighbor(GNode other) {
+			neighbors.remove(other);
+		}
 
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append(name).append(":");
+			for (GNode neighbor : neighbors) {
+				sb.append(" ").append(neighbor.getName());
+			}
+			return sb.toString();
+		}
+	}
 
-    // Return the number of vertices
-    public int nodeCount() {
-        return nodeArray.length;
-    }
+	private List<GNode> nodes;
+	private HashMap<String, GNode> nodeMap;
 
+	public Graph() {
+		nodes = new ArrayList<>();
+		nodeMap = new HashMap<>();
+	}
 
-    // Return the current number of edges
-    public int edgeCount() {
-        return numEdge;
-    }
+	public GNode addNode(String name) {
+		if (!nodeMap.containsKey(name)) {
+			GNode newNode = new GNode(name);
+			nodes.add(newNode);
+			nodeMap.put(name, newNode);
+			return newNode;
+		}
+		return nodeMap.get(name);
+	}
 
+	public void addEdge(String name1, String name2) {
+		GNode node1 = addNode(name1);
+		GNode node2 = addNode(name2);
+		node1.addNeighbor(node2);
+		node2.addNeighbor(node1);
+	}
 
-    // Get the value of node with index v
-    public Object getValue(int v) {
-        return nodeValues[v];
-    }
+	public void removeNode(String name) {
+		GNode node = nodeMap.get(name);
+		if (node != null) {
+			for (GNode neighbor : new ArrayList<>(node.getNeighbors())) {
+				neighbor.removeNeighbor(node);
+			}
+			nodes.remove(node);
+			nodeMap.remove(name);
+		}
+	}
 
+	public GNode getNode(String name) {
+		return nodeMap.get(name);
+	}
 
-    // Set the value of node with index v
-    public void setValue(int v, Object val) {
-        nodeValues[v] = val;
-    }
+	public List<GNode> getAllNodes() {
+		return nodes;
+	}
 
-
-    // Return the link in v's neighbor list that preceeds the
-    // one with w (or where it would be)
-    private Edge find(int v, int w) {
-        Edge curr = nodeArray[v];
-        while ((curr.next != null) && (curr.next.vertex < w)) {
-            curr = curr.next;
-        }
-        return curr;
-    }
-
-
-    // Adds a new edge from node v to node w with weight wgt
-    public void addEdge(int v, int w, int wgt) {
-        if (wgt == 0) {
-            return;
-        } // Can't store weight of 0
-        Edge curr = find(v, w);
-        if ((curr.next != null) && (curr.next.vertex == w)) {
-            curr.next.weight = wgt;
-        }
-        else {
-            curr.next = new Edge(w, wgt, curr, curr.next);
-            numEdge++;
-            if (curr.next.next != null) {
-                curr.next.next.prev = curr.next;
-            }
-        }
-    }
-
-
-    // Get the weight value for an edge
-    public int weight(int v, int w) {
-        Edge curr = find(v, w);
-        if ((curr.next == null) || (curr.next.vertex != w)) {
-            return 0;
-        }
-        else {
-            return curr.next.weight;
-        }
-    }
-
-
-    // Removes the edge from the graph.
-    public void removeEdge(int v, int w) {
-        Edge curr = find(v, w);
-        if ((curr.next == null) || curr.next.vertex != w) {
-            return;
-        }
-        else {
-            curr.next = curr.next.next;
-            if (curr.next != null) {
-                curr.next.prev = curr;
-            }
-        }
-        numEdge--;
-    }
-
-
-    // Returns true iff the graph has the edge
-    public boolean hasEdge(int v, int w) {
-        return weight(v, w) != 0;
-    }
-
-
-    // Returns an array containing the indicies of the neighbors of v
-    public int[] neighbors(int v) {
-        int cnt = 0;
-        Edge curr;
-        for (curr = nodeArray[v].next; curr != null; curr = curr.next) {
-            cnt++;
-        }
-        int[] temp = new int[cnt];
-        cnt = 0;
-        for (curr = nodeArray[v].next; curr != null; curr = curr.next) {
-            temp[cnt++] = curr.vertex;
-        }
-        return temp;
-    }
-
-
-    public String toString() {
-        return "";
-    }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (GNode node : nodes) {
+			sb.append(node.toString()).append("\n");
+		}
+		return sb.toString();
+	}
 }

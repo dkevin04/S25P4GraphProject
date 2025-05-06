@@ -9,7 +9,7 @@ public class Controller {
 	public Controller(int capacity) {
 		graph = new Graph();
 		artistTable = new Hash<>(capacity);
-		artistTable = new Hash<String, Graph>();
+		artistTable = new Hash<>(capacity);
 	}
 
 	public void insert(String artist, String song) {
