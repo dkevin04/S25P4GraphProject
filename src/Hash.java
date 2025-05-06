@@ -68,7 +68,7 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
-    public String find(K key) {
+    public E find(K key) {
         int home;
         int pos = home = h((String)key, capacity);
         for (int i = 1; table[pos] != null && (!key.equals(table[pos].key()))
@@ -76,7 +76,7 @@ public class Hash<K extends Comparable<K>, E> {
             pos = (home + i * i) % capacity;
         }
         if (table[pos] != null && key.equals(table[pos].key())) {
-            return table[pos].value().toString();
+            return table[pos].value();
         }
         else {
             return null;
