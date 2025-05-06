@@ -63,8 +63,8 @@ public class Hash<K extends Comparable<K>, E> {
         table = new KVPair[1000];
         capacity = 1000;
         size = 0;
-        E element = null;
-        tombstone = new KVPair<K, E>((K)"TOMBSTONE", element);
+        Graph element = new Graph();
+        tombstone = new KVPair<K, E>((K)"TOMBSTONE", (E)element);
     }
 
 
