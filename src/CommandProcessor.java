@@ -7,9 +7,9 @@ import java.io.IOException;
  * The purpose of this class is to parse a text file into its appropriate, line
  * by line commands for the format specified in the project spec.
  * 
- * @author CS Staff
+ * @author Blake Everman
  * 
- * @version 2024-01-22
+ * @version 2024-05-6
  */
 public class CommandProcessor {
 
@@ -21,8 +21,8 @@ public class CommandProcessor {
 
 	/**
 	 * The constructor for the command processor requires a Controller instance to
-	 * exist, so the only constructor takes a Controller class object to feed commands
-	 * to.
+	 * exist, so the only constructor takes a Controller class object to feed
+	 * commands to.
 	 * 
 	 * @param data the Controller object to manipulate
 	 * @param file input file with the commands we want to run
@@ -50,8 +50,8 @@ public class CommandProcessor {
 	}
 
 	/**
-	 * This method parses keywords in the line and calls methods in the Controller as
-	 * required. Each line command will be specified by one of the keywords to
+	 * This method parses keywords in the line and calls methods in the Controller
+	 * as required. Each line command will be specified by one of the keywords to
 	 * perform the actions. These actions are performed on specified objects and
 	 * include insert, remove, regionsearch, search, and dump. If the command in the
 	 * file line is not one of these, an appropriate message will be written in the
@@ -62,76 +62,55 @@ public class CommandProcessor {
 	 * @param line a single line from the text file
 	 */
 	public void processor(String line) {
-		// converts the string of the line into an
-		// array of its space (" ") delimited elements
-		String[] arr = line.split("\\s{1,}");
-		String command = arr[0]; // the command will be the first of these
-									// elements
-		// calls the insert function and passes the correct
-		// parameters by converting the string integers into
-		// their Integer equivalent, trimming the whitespace
-		/*
-		 * Grabbing the rectangle data x, y, w, h and turning them into ints. Creating a
-		 * new rectangle and pair with the data and inserting it.
-		 */
-		if (command.equals("insert")) {
-			if (arr.length == 2) {
-				String str = arr[1];
-				if (str.contains("<SEP>")) {
-					String[] artSong = str.split("<SEP>");
-					if (artSong.length == 2) {
-						String artist = artSong[0];
-						String song = artSong[1];
-						controller.insert(artist, song);
-					}
-					else {
-						System.out.println("wrong format");
-					}
-				}
-				else {
-					System.out.println("missing delimeter");
-				}
-			}
-			else {
-				System.out.println("wrong number of args");
-			}
+	    String[] arr = line.split("\\s+");
+	    String command = arr[0];
 
-		}
-		// calls the appropriate remove method based on the
-		// number of white space delimited strings in the line
-		/*
-		 * The remove and removeByValue method. For remove, we grab the name from the
-		 * arr and call remove. For removeByValue, we have to grab the x, y, w, h and
-		 * call remove with those values.
-		 */
-		else if (command.equals("remove")) {
-			// checks the number of white space delimited strings in the line
-			if (arr.length == 2) {
-				String name = arr[1];
-				controller.remove(name);
-			}
-			else {
-				System.out.println("Wrong number of args");
-			}
+	    if (command.equals("insert")) {
+	        // Join everything after "insert" back into a single string
+	        String rest = line.substring(line.indexOf(" ") + 1).trim();
+	        if (rest.contains("<SEP>")) {
+	            String[] artSong = rest.split("<SEP>");
+	            if (artSong.length == 2) {
+	                String artist = artSong[0].trim();
+	                String song = artSong[1].trim();
+	                controller.insert(artist, song);
+	            } else {
+	                System.out.println("wrong format");
+	            }
+	        } else {
+	            System.out.println("missing delimeter");
+	        }
+	    }
 
-		}
-		/*
-		 * Grab x, y, w, h from arr and call region search.
-		 */
-		else if (command.equals("print")) {
-			// calls the regionsearch method for a set of coordinates
-			// the string integers in the line will be trimmed of whitespace
-			if ( arr.length == 2) {
-				String name = arr[1];
-				controller.print(name);
-			}
-		
-		} else {
-			// the first white space delimited string in the line is not
-			// one of the commands which can manipulate the Controller,
-			// a message will be written to the console
-			System.out.println("Unrecognized command.");
-		}
+	    else if (command.equals("remove")) {
+	        if (arr.length >= 2) {
+	            String rest = line.substring(line.indexOf(" ") + 1).trim();
+
+	            // remove "artist " or "song " if present
+	            if (rest.startsWith("artist ")) {
+	                rest = rest.substring("artist ".length()).trim();
+	            } else if (rest.startsWith("song ")) {
+	                rest = rest.substring("song ".length()).trim();
+	            }
+
+	            controller.remove(rest);
+	        } else {
+	            System.out.println("Wrong number of args");
+	        }
+	    }
+
+	    else if (command.equals("print")) {
+	        if (arr.length >= 2) {
+	            controller.print(arr[1]);
+	        } else {
+	            System.out.println("Wrong number of args");
+	        }
+	    }
+
+	    else {
+	        System.out.println("Unrecognized command.");
+	    }
 	}
+
 
 }

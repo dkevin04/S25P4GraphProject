@@ -3,46 +3,67 @@
  */
 public class Controller {
 	private Graph graph;
-	private Hash<String, Graph.GNode> artistTable;
-	private Hash<String, Graph.GNode> songTable;
+	private Hash<String, GraphNode> artistTable;
+	private Hash<String, GraphNode> songTable;
 
 	public Controller(int capacity) {
 		graph = new Graph();
+		graph.init(capacity * 2);
 		artistTable = new Hash<>(capacity);
-		artistTable = new Hash<>(capacity);
+		songTable = new Hash<>(capacity);
 	}
 
 	public void insert(String artist, String song) {
-		Graph.GNode artistNode = artistTable.find(artist);
+		GraphNode artistNode = artistTable.find(artist);
 		if (artistNode == null) {
-			artistNode = graph.addNode(artist);
+			int index = graph.addNode(artist);
+			artistNode = new GraphNode(artist, index);
 			artistTable.insert(artist, artistNode);
 		}
-		Graph.GNode songNode = songTable.find(song);
+		GraphNode songNode = songTable.find(song);
 		if (songNode == null) {
-			songNode = graph.addNode(song);
+			int index = graph.addNode(song);
+			songNode = new GraphNode(song, index);
 			songTable.insert(song, songNode);
 		}
-		graph.addEdge(artist, song);
+		graph.addEdge(artistNode.getIndex(), songNode.getIndex(), 1);
 
 	}
 
 	public void remove(String name) {
-		// Graph.GNode node = artistTable.find(name);
-		if (artistTable.find(name) != null) {
-			graph.removeNode(name);
+		GraphNode node = artistTable.find(name);
+		if (node != null) {
+			graph.removeNode(node.getIndex());
 			artistTable.remove(name);
+			return;
 
-		} else if (songTable.find(name) != null) {
-			graph.removeNode(name);
-			songTable.remove(name);
-		} else {
-			System.out.println("Name not found");
 		}
+		node = songTable.find(name);
+		if (node != null) {
+			graph.removeNode(node.getIndex());
+			songTable.remove(name);
+			return;
+		}
+		System.out.println("Name not found");
 	}
 
 	public void print(String name) {
-		// TODO Auto-generated method stub
+		if (name.equals("artist")) {
+			System.out.println("Artist Hash Table:");
+			int count = artistTable.prints();
+			System.out.println("total artists: "+count);
+		}
+		else if (name.equals("song")) {
+			System.out.println("Song Hash Table:");
+			int count = songTable.prints();
+			System.out.println("total songs: "+count);
+		}
+		else if (name.equals("graph")) {
+			graph.printGraph();
+		}
+		else {
+			System.out.println("Not allowed");
+		}
 
 	}
 

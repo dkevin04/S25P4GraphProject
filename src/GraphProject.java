@@ -38,13 +38,13 @@ public class GraphProject {
      *            Command line parameters
      */
 	public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
+        if (args.length != 2) {
             System.out.println("Usage: PointsProject <command-file>");
             return;
         }
-
-        String commandFile = args[0].trim();
-        // System.out.println("Working on file " + commandFile);
+        int initHashSize = Integer.parseInt(args[0].trim());
+        String commandFile = args[1].trim();
+        System.out.println("Working on file " + commandFile);
         File theFile = new File(commandFile);
         if (!theFile.exists()) {
             System.out.println("There is no such input file as |" + commandFile
@@ -52,7 +52,7 @@ public class GraphProject {
             return;
         }
 
-        Controller myWorld = new Controller(0);
+        Controller myWorld = new Controller(initHashSize);
 
         CommandProcessor processor = new CommandProcessor(myWorld, theFile);
         processor.processFile();
