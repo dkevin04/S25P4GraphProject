@@ -68,9 +68,9 @@ public class HashTest extends TestCase {
         assertEquals(hash.search("long Lonesome Blues"), 4667);
         assertEquals(hash.getSize(), 8);
         hash.insert("a", graph);
-        assertTrue(hash.getTable()[101].toString().equals("(a, )"));
+        assertTrue(hash.getTable()[101].key().toString().equals("a"));
         hash.insert("a", graph);
-        assertTrue(hash.getTable()[106].toString().equals("(a, )"));
+        assertTrue(hash.getTable()[106].key().toString().equals("a"));
         assertEquals(hash.getSize(), 10);
         hash.insert("q'", graph);
         assertEquals(hash.search("q'"), 113);
@@ -99,18 +99,22 @@ public class HashTest extends TestCase {
     @SuppressWarnings("unchecked")
     public void testRemove() throws Exception {
         hash.insert("a", graph);
-        assertTrue(hash.getTable()[97].toString().equals("(a, )"));
+        assertTrue(hash.getTable()[97].key().toString().equals("a"));
         hash.insert("b", graph);
         assertEquals(hash.search("a"), 97);
         assertEquals(hash.search("b"), 98);
-        assertFalse(hash.getTable()[98].toString().equals("(TOMBSTONE, )"));
+        assertFalse(hash.getTable()[98].key().toString().equals(
+            "TOMBSTONE"));
         hash.remove("b");
         assertEquals(hash.search("b"), -1);
         assertEquals(hash.getSize(), 1);
-        assertTrue(hash.getTable()[98].toString().equals("(TOMBSTONE, )"));
-        System.out.println(hash.getTable()[98].toString());
-        assertTrue(hash.getTable()[98].toString().equals("(TOMBSTONE, )"));
-        assertFalse(hash.getTable()[97].toString().equals("(TOMBSTONE, )"));
+        assertTrue(hash.getTable()[98].key().toString().equals(
+            "TOMBSTONE"));
+        System.out.println(hash.getTable()[98].key().toString());
+        assertTrue(hash.getTable()[98].key().toString().equals(
+            "TOMBSTONE"));
+        assertFalse(hash.getTable()[97].key().toString().equals(
+            "TOMBSTONE"));
         hash.remove("Queen");
         assertEquals(hash.search("Queen"), -1);
         smallHash.insert("a", graph);
