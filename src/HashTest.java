@@ -1,8 +1,8 @@
 import student.TestCase;
 
 /**
- * @author <Put something here>
- * @version <Put something here>
+ * @author Kevin Dong
+ * @version 05/05/2025
  */
 public class HashTest extends TestCase {
     private Hash hash;

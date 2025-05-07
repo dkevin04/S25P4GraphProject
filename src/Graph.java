@@ -353,16 +353,6 @@ public class Graph {
     }
 
 
-    /**
-     * Returns the head of the adjacency list for the passed indices
-     * 
-     * @param v
-     *            First index
-     * @param w
-     *            Second index
-     * @return
-     *         Head of the adjacency list
-     */
     private int find(int[] parent, int v) {
         if (parent[v] == -1)
             return v;

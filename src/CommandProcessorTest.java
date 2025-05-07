@@ -1,19 +1,28 @@
 import java.io.*;
 
 /**
+ * Tests the CommandProcessor file
  * 
+ * @author Kevin Dong
+ * 
+ * @version 05/07/2025
  */
 public class CommandProcessorTest extends student.TestCase {
     private CommandProcessor cmd;
 
+    /**
+     * Initializes cmd
+     */
     public void setUp() {
-        File input = new File(
-            ".\\solutionTestData\\P4_sampleInput.txt");
+        File input = new File(".\\solutionTestData\\P4_sampleInput.txt");
         Controller control = new Controller(10);
         cmd = new CommandProcessor(control, input);
     }
 
 
+    /**
+     * Tests the CommandProcessor can parse a passed file
+     */
     public void testInput() {
         cmd.processFile();
         assertFuzzyEquals(systemOut().getHistory(),
