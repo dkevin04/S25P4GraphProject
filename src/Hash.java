@@ -102,35 +102,37 @@ public class Hash<K extends Comparable<K>, E> {
 
     public int prints() {
         int count = 0;
-        /*
-         * prints all the hash tale values and returns count
-         */
-        int index = 0;
-        while (index < table.length) {
-            if (table[index] != null) {
-                System.out.println(table[index]);
+        for (int i = 0; i < table.length; i++) {
+            KVPair<K, E> pair = table[i];
+            if (pair != null && !pair.key().equals("TOMBSTONE")) {
+                System.out.println(i + ": |" + pair.key() + "|");
                 count++;
+            } else if (pair != null && pair.key().equals("TOMBSTONE")) {
+                System.out.println(i + ": TOMBSTONE");
             }
-            index++;
         }
         return count;
     }
 
 
-    public void expandTable() {
-        @SuppressWarnings("unchecked")
-        KVPair<K, E>[] newTable = new KVPair[capacity * 2];
-        int index = 0;
-        while (index < newTable.length) {
-            if (newTable[index] != null) {
-                int newHome = h(newTable[index].key().toString(), table.length);
-                newTable[newHome] = table[index];
+
+    @SuppressWarnings("unchecked")
+	public void expandTable() {
+        KVPair<K, E>[] oldTable = table;
+        int oldCapacity = capacity;
+
+        capacity = oldCapacity * 2;
+        table = new KVPair[capacity];
+        size = 0;
+
+        for (int i = 0; i < oldCapacity; i++) {
+            KVPair<K, E> pair = oldTable[i];
+            if (pair != null && !pair.key().equals("TOMBSTONE")) {
+                insert(pair.key(), pair.value());
             }
-            index++;
         }
-        table = newTable;
-        capacity = capacity * 2;
     }
+
 
 
     public boolean insert(K key, E element) {
@@ -139,6 +141,7 @@ public class Hash<K extends Comparable<K>, E> {
          */
         if (size + 1 > (capacity / 2)) {
             expandTable();
+            System.out.println("Song hash table size doubled.");
         }
         /*
          * if not then proceed to insert

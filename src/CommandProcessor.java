@@ -85,15 +85,17 @@ public class CommandProcessor {
 	    else if (command.equals("remove")) {
 	        if (arr.length >= 2) {
 	            String rest = line.substring(line.indexOf(" ") + 1).trim();
+	            int song = 0;
 
 	            // remove "artist " or "song " if present
 	            if (rest.startsWith("artist ")) {
 	                rest = rest.substring("artist ".length()).trim();
 	            } else if (rest.startsWith("song ")) {
 	                rest = rest.substring("song ".length()).trim();
+	                song = 1;
 	            }
 
-	            controller.remove(rest);
+	            controller.remove(rest, song);
 	        } else {
 	            System.out.println("Wrong number of args");
 	        }

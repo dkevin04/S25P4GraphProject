@@ -175,8 +175,8 @@ public class Graph {
 			}
 		}
 
-		System.out.println("Number of connected components: " + components);
-		System.out.println("Size of largest component: " + largest);
+		System.out.println("There are "+components+" connected components");
+		System.out.println("The largest connected component has " + largest + " elements");
 	}
 
 	private int find(int[] parent, int v) {

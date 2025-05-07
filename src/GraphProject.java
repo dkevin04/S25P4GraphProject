@@ -44,7 +44,7 @@ public class GraphProject {
         }
         int initHashSize = Integer.parseInt(args[0].trim());
         String commandFile = args[1].trim();
-        System.out.println("Working on file " + commandFile);
+        //System.out.println("Working on file " + commandFile);
         File theFile = new File(commandFile);
         if (!theFile.exists()) {
             System.out.println("There is no such input file as |" + commandFile
