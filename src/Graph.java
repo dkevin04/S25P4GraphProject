@@ -1,6 +1,6 @@
 /**
- * Graph implemented as adjacency list with vertex labels. Designed for use with
- * GraphNode objects holding index and name.
+ * Graph class largely from OpenDsa, slightly tweaked to account for the
+ * GraphNode class.
  */
 public class Graph {
 
@@ -20,6 +20,8 @@ public class Graph {
 	private Edge[] nodeArray; // adjacency list heads
 	private Object[] nodeValues; // labels stored at vertex index
 	private int numEdge;
+	private int capacity;
+	private int size;
 
 	public Graph() {
 		// constructor does nothing; graph must be initialized with init()
@@ -29,12 +31,14 @@ public class Graph {
 	 * Initialize the graph with n vertices.
 	 */
 	public void init(int n) {
+		capacity = n;
 		nodeArray = new Edge[n];
 		nodeValues = new Object[n];
 		for (int i = 0; i < n; i++) {
 			nodeArray[i] = new Edge(-1, -1, null, null); // dummy header
 		}
 		numEdge = 0;
+		size = 0;
 	}
 
 	public int nodeCount() {
@@ -57,13 +61,37 @@ public class Graph {
 	 * Allocate a new node slot for a given name and return its index.
 	 */
 	public int addNode(String name) {
+		if (size >= capacity) {
+			expand();
+		}
 		for (int i = 0; i < nodeValues.length; i++) {
 			if (nodeValues[i] == null) {
 				nodeValues[i] = name;
+				size++;
 				return i;
 			}
 		}
-		throw new RuntimeException("Graph full: expansion not implemented.");
+		return -1;
+	}
+
+	private void expand() {
+		int newCapacity = capacity * 2;
+		Object[] newValues = new Object[capacity];
+		Edge[] newEdges = new Edge[capacity];
+
+		for (int i = 0; i < capacity; i++) {
+			newValues[i] = nodeValues[i];
+			newEdges[i] = nodeArray[i];
+		}
+
+		for (int i = nodeValues.length; i < capacity; i++) {
+			newEdges[i] = new Edge(-1, -1, null, null);
+		}
+
+		nodeValues = newValues;
+		nodeArray = newEdges;
+		capacity = newCapacity;
+
 	}
 
 	/**
@@ -123,11 +151,13 @@ public class Graph {
 
 	public void removeNode(int v) {
 		int[] neighbors = neighbors(v);
-		for (int u : neighbors) {
+		for (int i = 0; i < neighbors.length; i++) {
+			int u = neighbors[i];
 			removeEdge(u, v);
 		}
 		nodeArray[v].next = null;
 		nodeValues[v] = null;
+		size--;
 	}
 
 	public int[] neighbors(int v) {
@@ -148,14 +178,16 @@ public class Graph {
 	public void printGraph() {
 		int n = nodeCount();
 		int[] parent = new int[n];
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; i++) {
 			parent[i] = -1;
+		}
 
 		for (int i = 0; i < n; i++) {
-			if (nodeValues[i] == null)
-				continue;
-			for (int neighbor : neighbors(i)) {
-				union(parent, i, neighbor);
+			if (nodeValues[i] != null) {
+				int[] neighbors = neighbors(i);
+				for (int j = 0; j < neighbors.length; j++) {
+					union(parent, i, neighbors[j]);
+				}
 			}
 		}
 
@@ -167,15 +199,18 @@ public class Graph {
 			}
 		}
 
-		int components = 0, largest = 0;
-		for (int size : sizes) {
-			if (size > 0) {
+		int components = 0;
+		int largest = 0;
+		for (int i = 0; i < sizes.length; i++) {
+			if (sizes[i] > 0) {
 				components++;
-				largest = Math.max(largest, size);
+				if (sizes[i] > largest) {
+					largest = sizes[i];
+				}
 			}
 		}
 
-		System.out.println("There are "+components+" connected components");
+		System.out.println("There are " + components + " connected components");
 		System.out.println("The largest connected component has " + largest + " elements");
 	}
 

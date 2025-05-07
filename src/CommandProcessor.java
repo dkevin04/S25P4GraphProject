@@ -5,14 +5,14 @@ import java.io.IOException;
 
 /**
  * The purpose of this class is to parse a text file into its appropriate, line
- * by line commands for the format specified in the project spec.
+ * by line commands for the format specified in the project spec. Its largely
+ * copied from previous projects.
  * 
  * @author Blake Everman
  * 
  * @version 2024-05-6
  */
 public class CommandProcessor {
-
 	// the Controller object to manipulate the
 	// commands that the command processor
 	// feeds to it
@@ -50,69 +50,73 @@ public class CommandProcessor {
 	}
 
 	/**
-	 * This method parses keywords in the line and calls methods in the Controller
-	 * as required. Each line command will be specified by one of the keywords to
-	 * perform the actions. These actions are performed on specified objects and
-	 * include insert, remove, regionsearch, search, and dump. If the command in the
-	 * file line is not one of these, an appropriate message will be written in the
-	 * console. This processor method is called for each line in the file. Note that
-	 * the methods called will themselves write to the console, this method does
-	 * not, only calling methods that do.
+	 * Splits the command into a string array and checks which command is being
+	 * called. Then, we put the rest of the line, excluding the command, into a
+	 * substring. If there is a delimiter (<SEP>), we split that substring again to
+	 * just grab the song or artist. Then, we call our methods with the strings that
+	 * we are left with.
 	 * 
 	 * @param line a single line from the text file
 	 */
 	public void processor(String line) {
-	    String[] arr = line.split("\\s+");
-	    String command = arr[0];
+		String[] arr = line.split("\\s+");
+		String command = arr[0];
 
-	    if (command.equals("insert")) {
-	        // Join everything after "insert" back into a single string
-	        String rest = line.substring(line.indexOf(" ") + 1).trim();
-	        if (rest.contains("<SEP>")) {
-	            String[] artSong = rest.split("<SEP>");
-	            if (artSong.length == 2) {
-	                String artist = artSong[0].trim();
-	                String song = artSong[1].trim();
-	                controller.insert(artist, song);
-	            } else {
-	                System.out.println("wrong format");
-	            }
-	        } else {
-	            System.out.println("missing delimeter");
-	        }
-	    }
+		if (command.equals("insert")) {
+			// Only grabs what's after the command insert.
+			String rest = line.substring(line.indexOf(" ") + 1).trim();
+			if (rest.contains("<SEP>")) {
+				// Splits delimiter into song and artist.
+				String[] artSong = rest.split("<SEP>");
+				if (artSong.length == 2) {
+					String artist = artSong[0].trim();
+					String song = artSong[1].trim();
+					controller.insert(artist, song);
+				} else {
+					System.out.println("wrong format");
+				}
+			} else {
+				System.out.println("missing delimeter");
+			}
+		}
 
-	    else if (command.equals("remove")) {
-	        if (arr.length >= 2) {
-	            String rest = line.substring(line.indexOf(" ") + 1).trim();
-	            int song = 0;
+		else if (command.equals("remove")) {
+			if (arr.length >= 2) {
+				// Same as insert, grabs what is after command remove.
+				String rest = line.substring(line.indexOf(" ") + 1).trim();
+				int song = 0;
 
-	            // remove "artist " or "song " if present
-	            if (rest.startsWith("artist ")) {
-	                rest = rest.substring("artist ".length()).trim();
-	            } else if (rest.startsWith("song ")) {
-	                rest = rest.substring("song ".length()).trim();
-	                song = 1;
-	            }
+				// if the substring starts with artist, then grabs the 
+				//artist name.
+				if (rest.startsWith("artist ")) {
+					rest = rest.substring("artist ".length()).trim();
+				}
+				// if the substring starts with song, grab song name and set
+				//song to 1. That way we can print our error statment's 
+				//correctly in controller.
+				else if (rest.startsWith("song ")) {
+					rest = rest.substring("song ".length()).trim();
+					song = 1;
+				}
 
-	            controller.remove(rest, song);
-	        } else {
-	            System.out.println("Wrong number of args");
-	        }
-	    }
+				controller.remove(rest, song);
+			} else {
+				System.out.println("Wrong number of args");
+			}
+		}
 
-	    else if (command.equals("print")) {
-	        if (arr.length >= 2) {
-	            controller.print(arr[1]);
-	        } else {
-	            System.out.println("Wrong number of args");
-	        }
-	    }
+		// Print call with type of print being the second command argument.
+		else if (command.equals("print")) {
+			if (arr.length >= 2) {
+				controller.print(arr[1]);
+			} else {
+				System.out.println("Wrong number of args");
+			}
+		}
 
-	    else {
-	        System.out.println("Unrecognized command.");
-	    }
+		else {
+			System.out.println("Unrecognized command.");
+		}
 	}
-
 
 }

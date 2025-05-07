@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Main for Graph project (CS3114/CS5040 Spring 2025 Project 4).
- * Usage: java GraphProject <init-hash-size> <command-file>
+ * Main for Graph project (CS3114/CS5040 Spring 2025 Project 4). Usage: java
+ * GraphProject <init-hash-size> <command-file>
  *
- *Testing
- * @author {Your Name Here}
- * @version {Put Something Here}
+ * Testing
+ * 
+ * @author {Blake Everman}
+ * @version {5.7.2025}
  *
  */
 
@@ -33,28 +34,26 @@ import java.io.IOException;
 // letter of this restriction.
 
 public class GraphProject {
-    /**
-     * @param args
-     *            Command line parameters
-     */
+	/**
+	 * @param args Command line parameters
+	 */
 	public static void main(String[] args) throws IOException {
-        if (args.length != 2) {
-            System.out.println("Usage: PointsProject <command-file>");
-            return;
-        }
-        int initHashSize = Integer.parseInt(args[0].trim());
-        String commandFile = args[1].trim();
-        //System.out.println("Working on file " + commandFile);
-        File theFile = new File(commandFile);
-        if (!theFile.exists()) {
-            System.out.println("There is no such input file as |" + commandFile
-                + "|");
-            return;
-        }
+		if (args.length != 2) {
+			System.out.println("Usage: PointsProject <command-file>");
+			return;
+		}
+		int initHashSize = Integer.parseInt(args[0].trim());
+		String commandFile = args[1].trim();
+		// System.out.println("Working on file " + commandFile);
+		File theFile = new File(commandFile);
+		if (!theFile.exists()) {
+			System.out.println("There is no such input file as |" + commandFile + "|");
+			return;
+		}
 
-        Controller myWorld = new Controller(initHashSize);
+		Controller myWorld = new Controller(initHashSize);
 
-        CommandProcessor processor = new CommandProcessor(myWorld, theFile);
-        processor.processFile();
-    }
+		CommandProcessor processor = new CommandProcessor(myWorld, theFile);
+		processor.processFile();
+	}
 }
