@@ -8,7 +8,7 @@ public class CommandProcessorTest extends student.TestCase {
 
     public void setUp() {
         File input = new File(
-            "C:\\Users\\Kevin\\eclipse-workspace\\S25P4GraphProject\\solutionTestData\\P4_sampleInput.txt");
+            ".\\solutionTestData\\P4_sampleInput.txt");
         Controller control = new Controller(10);
         cmd = new CommandProcessor(control, input);
     }

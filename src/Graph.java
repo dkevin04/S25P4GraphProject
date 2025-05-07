@@ -167,6 +167,16 @@ public class Graph {
     }
 
 
+    /**
+     * Adds an edge object for the specified indices
+     * 
+     * @param v
+     *            first index
+     * @param w
+     *            second index
+     * @param wgt
+     *            weight of the edge
+     */
     public void addEdge(int v, int w, int weight) {
         if (weight == 0)
             return;
@@ -175,6 +185,16 @@ public class Graph {
     }
 
 
+    /**
+     * Helper method for adding an edge
+     * 
+     * @param v
+     *            first index
+     * @param w
+     *            second index
+     * @param wgt
+     *            weight of the edge
+     */
     private void insertEdge(int v, int w, int weight) {
         Edge curr = find(v, w);
         if (curr.next != null && curr.next.vertex == w) {
@@ -190,6 +210,16 @@ public class Graph {
     }
 
 
+    /**
+     * Finds the weight of the edge at the indices
+     * 
+     * @param v
+     *            first index
+     * @param w
+     *            second index
+     * @return
+     *         the weight of the edge
+     */
     public int weight(int v, int w) {
         Edge curr = find(v, w);
         if (curr.next == null || curr.next.vertex != w) {
@@ -199,11 +229,29 @@ public class Graph {
     }
 
 
+    /**
+     * Returns true if the edge exists
+     * 
+     * @param v
+     *            first index
+     * @param w
+     *            second index
+     * @return
+     *         true if the edge exists
+     */
     public boolean hasEdge(int v, int w) {
         return weight(v, w) != 0;
     }
 
 
+    /**
+     * Removes the edge at the current indices
+     * 
+     * @param v
+     *            first index
+     * @param w
+     *            second index
+     */
     public void removeEdge(int v, int w) {
         Edge curr = find(v, w);
         if (curr.next == null || curr.next.vertex != w) {
@@ -217,6 +265,12 @@ public class Graph {
     }
 
 
+    /**
+     * Removes a node from the parent tree and removes all edges tied to it
+     * 
+     * @param index
+     *            the index of the removed node
+     */
     public void removeNode(int v) {
         int[] neighbors = neighbors(v);
         for (int i = 0; i < neighbors.length; i++) {
@@ -229,6 +283,14 @@ public class Graph {
     }
 
 
+    /**
+     * returns an int array of the edges a vertex has
+     * 
+     * @param v
+     *            index of the head of the adjacency list
+     * @return
+     *         Array list of indices of the elements in the adjacency list
+     */
     public int[] neighbors(int v) {
         int count = 0;
         Edge curr;
@@ -245,6 +307,11 @@ public class Graph {
     }
 
 
+    /**
+     * Prints the number of connected components and how large the largest
+     * component is
+     * 
+     */
     public void printGraph() {
         int n = nodeCount();
         int[] parent = new int[n];
@@ -286,6 +353,16 @@ public class Graph {
     }
 
 
+    /**
+     * Returns the head of the adjacency list for the passed indices
+     * 
+     * @param v
+     *            First index
+     * @param w
+     *            Second index
+     * @return
+     *         Head of the adjacency list
+     */
     private int find(int[] parent, int v) {
         if (parent[v] == -1)
             return v;
