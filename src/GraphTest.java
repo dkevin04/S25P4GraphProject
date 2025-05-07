@@ -32,7 +32,7 @@ public class GraphTest extends student.TestCase {
         assertEquals(graph.edgeCount(), 1);
         graph.addNode("David Bowie");
         graph.addNode("Under Pressure");
-        assertEquals(graph.addNode("AC/DC"), 6);
+        assertEquals(graph.addNode("AC/DC"), 5);
     }
 
 

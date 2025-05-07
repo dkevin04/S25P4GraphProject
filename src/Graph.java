@@ -132,15 +132,15 @@ public class Graph {
 
 
     /**
-     * EXpands the size of the graph to double the old capacity for both nodes
+     * Expands the size of the graph to double the old capacity for both nodes
      * and edges
      */
     private void expand() {
-        int newCapacity = capacity * 2;
+        capacity = capacity * 2;
         Object[] newValues = new Object[capacity];
         Edge[] newEdges = new Edge[capacity];
 
-        for (int i = 0; i < capacity; i++) {
+        for (int i = 0; i < capacity / 2; i++) {
             newValues[i] = nodeValues[i];
             newEdges[i] = nodeArray[i];
         }
@@ -151,7 +151,6 @@ public class Graph {
 
         nodeValues = newValues;
         nodeArray = newEdges;
-        capacity = newCapacity;
 
     }
 
