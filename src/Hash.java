@@ -1,12 +1,16 @@
 
 /**
  * Hash table class
- *
+ * 
+ * @param K
+ *            key
+ * @param E
+ *            value
  * @author <Blake Everman>
  * @author Kevin Dong
  * @version 05/05/2025
+ * 
  */
-
 public class Hash<K extends Comparable<K>, E> {
 
     private KVPair<K, E>[] table;
@@ -49,6 +53,12 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Constuctor with a specified hash size
+     * 
+     * @param hashSize
+     *            size of the hash table
+     */
     @SuppressWarnings("unchecked")
     public Hash(int hashSize) {
         table = new KVPair[hashSize];
@@ -59,6 +69,9 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Default constructor, hash size assumed to be 1000
+     */
     @SuppressWarnings("unchecked")
     public Hash() {
         table = new KVPair[1000];
@@ -69,9 +82,16 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Adds a record object to the hashtable at the hashed index
+     * 
+     * @param key
+     *            artist or song we want to insert
+     * @return E value we want
+     */
     public E find(K key) {
-        int home;
-        int pos = home = h((String)key, capacity);
+        int home = h((String)key, capacity);
+        int pos = h((String)key, capacity);
         for (int i = 1; table[pos] != null && (!key.equals(table[pos].key()))
             && i <= capacity; i++) {
             pos = (home + i * i) % capacity;
@@ -85,9 +105,17 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Returns the index of the passed string, -1 if not in hash
+     * 
+     * @param key
+     *            artist or song we want to find
+     * @return
+     *         Index of the passed key
+     */
     public int search(K key) {
-        int home;
-        int pos = home = h((String)key, capacity);
+        int home = h((String)key, capacity);
+        int pos = h((String)key, capacity);
         for (int i = 1; table[pos] != null && (!key.equals(table[pos].key()))
             && i <= capacity; i++) {
             pos = (home + i * i) % capacity;
@@ -101,6 +129,12 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Prints out the number of records in the hash and then prints the names of
+     * each record
+     * 
+     * @return number of non tombstone records
+     */
     public int prints() {
         int count = 0;
         for (int i = 0; i < table.length; i++) {
@@ -117,6 +151,9 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Increases the size of the table and copies values to the new table
+     */
     @SuppressWarnings("unchecked")
     public void expandTable() {
         KVPair<K, E>[] oldTable = table;
@@ -135,14 +172,24 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Inserts an element in the hash table using quadratic probing for
+     * collisions
+     * 
+     * @param key
+     *            key for the pair
+     * @param element
+     *            value for the pair
+     * @return true if inserted, false if not
+     */
     public boolean insert(K key, E element) {
         // if expansion needed.
         if (size + 1 > (capacity / 2)) {
             expandTable();
             System.out.println("Song hash table size doubled.");
         }
-        int home;
-        int pos = home = h((String)key, capacity);
+        int home = h((String)key, capacity);
+        int pos = h((String)key, capacity);
         for (int i = 1; table[pos] != null && i <= capacity; i++) {
             pos = (home + i * i) % capacity;
         }
@@ -155,6 +202,12 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Removes the first instance of a entry with key
+     * 
+     * @param key
+     *            key to be removed
+     */
     public void remove(K key) {
         /*
          * removes using tombstone
@@ -168,11 +221,21 @@ public class Hash<K extends Comparable<K>, E> {
     }
 
 
+    /**
+     * Gets the size of the table
+     * 
+     * @return size of the table
+     */
     public int getSize() {
         return size;
     }
 
 
+    /**
+     * Returns the table as an array
+     * 
+     * @return the table
+     */
     public KVPair<K, E>[] getTable() {
         return table;
     }

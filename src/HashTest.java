@@ -103,18 +103,14 @@ public class HashTest extends TestCase {
         hash.insert("b", graph);
         assertEquals(hash.search("a"), 97);
         assertEquals(hash.search("b"), 98);
-        assertFalse(hash.getTable()[98].key().toString().equals(
-            "TOMBSTONE"));
+        assertFalse(hash.getTable()[98].key().toString().equals("TOMBSTONE"));
         hash.remove("b");
         assertEquals(hash.search("b"), -1);
         assertEquals(hash.getSize(), 1);
-        assertTrue(hash.getTable()[98].key().toString().equals(
-            "TOMBSTONE"));
+        assertTrue(hash.getTable()[98].key().toString().equals("TOMBSTONE"));
         System.out.println(hash.getTable()[98].key().toString());
-        assertTrue(hash.getTable()[98].key().toString().equals(
-            "TOMBSTONE"));
-        assertFalse(hash.getTable()[97].key().toString().equals(
-            "TOMBSTONE"));
+        assertTrue(hash.getTable()[98].key().toString().equals("TOMBSTONE"));
+        assertFalse(hash.getTable()[97].key().toString().equals("TOMBSTONE"));
         hash.remove("Queen");
         assertEquals(hash.search("Queen"), -1);
         smallHash.insert("a", graph);
@@ -122,5 +118,48 @@ public class HashTest extends TestCase {
         smallHash.insert("c", graph);
         smallHash.remove("c");
         assertEquals(smallHash.getSize(), 2);
+    }
+
+
+    /**
+     * Tests the find method
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void testFind() {
+        smallHash.insert("a", graph);
+        smallHash.insert("b", graph);
+        smallHash.insert("c", graph);
+        assertEquals(smallHash.find("b"), graph);
+        assertNotNull(smallHash.find("b"));
+        smallHash.insert("d", graph);
+        smallHash.insert("e", graph);
+        smallHash.insert("f", graph);
+        assertEquals(smallHash.find("b"), graph);
+        assertNotNull(smallHash.find("b"));
+        assertEquals(smallHash.find("f"), graph);
+        assertNotNull(smallHash.find("f"));
+        assertNull(smallHash.find("F"));
+        smallHash = new Hash(10);
+        smallHash.insert("c", graph);
+        smallHash.insert("c", graph);
+        smallHash.insert("c", graph);
+        assertEquals(smallHash.find("c"), graph);
+        assertNotNull(smallHash.find("c"));
+        assertNull(smallHash.find("F"));
+    }
+
+
+    /**
+     * Tests the prints method
+     */
+    @SuppressWarnings("unchecked")
+    public void testPrints() {
+        smallHash.insert("a", graph);
+        smallHash.insert("b", graph);
+        smallHash.insert("c", graph);
+        smallHash.insert("d", graph);
+        smallHash.insert("e", graph);
+        smallHash.insert("f", graph);
+        assertEquals(smallHash.prints(), 6);
     }
 }

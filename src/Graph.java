@@ -11,7 +11,8 @@ public class Graph {
     private class Edge {
         private int vertex;
         private int weight;
-        private Edge prev, next;
+        private Edge prev;
+        private Edge next;
 
         Edge(int v, int w, Edge p, Edge n) {
             this.vertex = v;
@@ -66,6 +67,17 @@ public class Graph {
 
 
     /**
+     * Returns number of nodes in a graph
+     * 
+     * @return
+     *         number of nodes
+     */
+    public int getSize() {
+        return size;
+    }
+
+
+    /**
      * Returns the number of edges in the graph
      * 
      * @return
@@ -107,19 +119,15 @@ public class Graph {
      * 
      * @param name
      *            name of the node being added
+     * @return the index of the added node
      */
     public int addNode(String name) {
         if (size >= capacity) {
             expand();
         }
-        for (int i = 0; i < nodeValues.length; i++) {
-            if (nodeValues[i] == null) {
-                nodeValues[i] = name;
-                size++;
-                return i;
-            }
-        }
-        return -1;
+        nodeValues[size] = name;
+        size++;
+        return size - 1;
     }
 
 
@@ -174,7 +182,7 @@ public class Graph {
      *            first index
      * @param w
      *            second index
-     * @param wgt
+     * @param weight
      *            weight of the edge
      */
     public void addEdge(int v, int w, int weight) {
@@ -182,6 +190,9 @@ public class Graph {
             return;
         insertEdge(v, w, weight);
         insertEdge(w, v, weight);
+        if (hasEdge(v, w)) {
+            numEdge++;
+        }
     }
 
 
@@ -202,7 +213,6 @@ public class Graph {
         }
         else {
             curr.next = new Edge(w, weight, curr, curr.next);
-            numEdge++;
             if (curr.next.next != null) {
                 curr.next.next.prev = curr.next;
             }
@@ -268,7 +278,7 @@ public class Graph {
     /**
      * Removes a node from the parent tree and removes all edges tied to it
      * 
-     * @param index
+     * @param v
      *            the index of the removed node
      */
     public void removeNode(int v) {

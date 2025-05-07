@@ -34,26 +34,28 @@ import java.io.IOException;
 // letter of this restriction.
 
 public class GraphProject {
-	/**
-	 * @param args Command line parameters
-	 */
-	public static void main(String[] args) throws IOException {
-		if (args.length != 2) {
-			System.out.println("Usage: PointsProject <command-file>");
-			return;
-		}
-		int initHashSize = Integer.parseInt(args[0].trim());
-		String commandFile = args[1].trim();
-		// System.out.println("Working on file " + commandFile);
-		File theFile = new File(commandFile);
-		if (!theFile.exists()) {
-			System.out.println("There is no such input file as |" + commandFile + "|");
-			return;
-		}
+    /**
+     * @param args
+     *            Command line parameters
+     */
+    public static void main(String[] args) throws IOException {
+        if (args.length != 2) {
+            System.out.println("Usage: PointsProject <command-file>");
+            return;
+        }
+        int initHashSize = Integer.parseInt(args[0].trim());
+        String commandFile = args[1].trim();
+        // System.out.println("Working on file " + commandFile);
+        File theFile = new File(commandFile);
+        if (!theFile.exists()) {
+            System.out.println("There is no such input file as |" + commandFile
+                + "|");
+            return;
+        }
 
-		Controller myWorld = new Controller(initHashSize);
+        Controller myWorld = new Controller(initHashSize);
 
-		CommandProcessor processor = new CommandProcessor(myWorld, theFile);
-		processor.processFile();
-	}
+        CommandProcessor processor = new CommandProcessor(myWorld, theFile);
+        processor.processFile();
+    }
 }
