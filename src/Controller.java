@@ -75,10 +75,9 @@ public class Controller {
 
     /**
      * Much like insert logic, removing from graph and hash table if found.
-     * Also, we
-     * take in a int value from command processor telling us if its a song or
-     * artist
-     * so that we can print correct error message if its not found.
+     * Also, we take in a int value from command processor telling us if its a
+     * song or artist so that we can print correct error message if its not
+     * found.
      *
      * @param name
      *            the name

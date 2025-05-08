@@ -2,9 +2,9 @@
 /**
  * Hash table class
  * 
- * @param K
+ * @param <K>
  *            key
- * @param E
+ * @param <E>
  *            value
  * @author <Blake Everman>
  * @author Kevin Dong
@@ -83,15 +83,15 @@ public class Hash<K extends Comparable<K>, E> {
 
 
     /**
-     * Adds a record object to the hashtable at the hashed index
+     * Finds the value associated with the key
      * 
      * @param key
-     *            artist or song we want to insert
+     *            key used for find
      * @return E value we want
      */
     public E find(K key) {
-        int home = h((String)key, capacity);
         int pos = h((String)key, capacity);
+        int home = pos;
         for (int i = 1; table[pos] != null && (!key.equals(table[pos].key()))
             && i <= capacity; i++) {
             pos = (home + i * i) % capacity;
@@ -114,8 +114,8 @@ public class Hash<K extends Comparable<K>, E> {
      *         Index of the passed key
      */
     public int search(K key) {
-        int home = h((String)key, capacity);
         int pos = h((String)key, capacity);
+        int home = pos;
         for (int i = 1; table[pos] != null && (!key.equals(table[pos].key()))
             && i <= capacity; i++) {
             pos = (home + i * i) % capacity;
@@ -180,25 +180,20 @@ public class Hash<K extends Comparable<K>, E> {
      *            key for the pair
      * @param element
      *            value for the pair
-     * @return true if inserted, false if not
      */
-    public boolean insert(K key, E element) {
+    public void insert(K key, E element) {
         // if expansion needed.
         if (size + 1 > (capacity / 2)) {
             expandTable();
             System.out.println("Song hash table size doubled.");
         }
-        int home = h((String)key, capacity);
         int pos = h((String)key, capacity);
-        for (int i = 1; table[pos] != null && i <= capacity; i++) {
+        int home = pos;
+        for (int i = 1; table[pos] != null && table[pos] != tombstone; i++) {
             pos = (home + i * i) % capacity;
         }
-        if (table[pos] == null) {
-            table[pos] = new KVPair<>(key, element);
-            size++;
-            return true;
-        }
-        return false;
+        table[pos] = new KVPair<>(key, element);
+        size++;
     }
 
 

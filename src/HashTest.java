@@ -88,8 +88,9 @@ public class HashTest extends TestCase {
         emptyHash.prints();
         smallHash = new Hash(10);
         smallHash.insert("c", graph);
+        smallHash.remove("c");
         smallHash.insert("c", graph);
-        smallHash.insert("c", graph);
+        assertTrue(smallHash.getTable()[9].key().toString().equals("c"));
     }
 
 

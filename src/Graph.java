@@ -298,7 +298,7 @@ public class Graph {
      * @param v
      *            index of the head of the adjacency list
      * @return
-     *         Array list of indices of the elements in the adjacency list
+     *         Array of indices of the elements in the adjacency list
      */
     public int[] neighbors(int v) {
         int count = 0;
